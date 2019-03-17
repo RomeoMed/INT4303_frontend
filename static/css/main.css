@@ -1,0 +1,135 @@
+main {
+	width: 100% !important;
+}
+
+
+nav {
+	background-color: #0066cc;
+	color: #fff;
+}
+
+.tile {
+	width: 40%;
+	display: inline-block;
+	margin: 0.3em;
+	color: #000;
+	background-color: green;
+}
+
+.col-sm-3 {
+	text-align: center;
+}
+
+nav li a {
+	color: #fff;
+}
+
+.top_row {
+	background-color: #1767A6;
+}
+
+body {
+	width: 100%;
+}
+
+@media only screen and (max-width: 799px) {
+	.image-container {
+		width: 100%;
+		text-align: center;
+	}
+	
+	nav {
+		width: 100%;
+	}
+	
+	.white {
+		color: white;
+		background-color: white;
+	}
+	
+	header {
+		width: 100%;
+	}
+	
+	.header-img {
+		display: none;
+	}
+	
+	.no_mobile {
+		display: none;
+	}
+	
+	.navbar-toggle {
+		color: #fff;
+	}
+	
+	.quick-link {
+		margin-top: 2em;
+	}
+	
+}
+
+@media only screen and (min-width: 800px) {
+	.nav li {
+		float: right !important;
+	}
+	.image-container {
+		margin-left: 1em;
+		float: left;
+	}
+
+	.header-img img {
+		width: 30%;
+		height: auto;
+	}
+	
+	.mobile_nav {
+		color: #0066cc;
+	}
+	
+	.mobile {
+		display: none;
+	}
+	
+	
+}
+
+
+
+.dropdown-menu {
+	background-color: #f2f2f2;
+}
+
+.dropdown-menu li a {
+	color: #0066cc;
+}
+
+.box {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 2em;
+	border: 1px solid grey;
+	background-color: #0066cc;
+	color: #f2f2f2;
+	height: 230px;
+}
+
+.box img {
+	width: 60%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#helpdesk {
+	width: 45%;
+}
+
+.box h4 {
+	margin-top: 1em;
+}
+
+.main_row {
+	margin-top: 3em;
+}
