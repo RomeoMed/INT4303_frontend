@@ -1,0 +1,16 @@
+{% extends 'layouts/form.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  <form method="post" class="form" action="/content" name="details">
+    <h3 class="form-heading">Progress <a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    {{ form.first_name.label }}
+    {{ form.first_name(class_ = 'form-control first-input', id='first_name', placeholder = 'John', required = true, autofocus = true) }}
+    {{ form.last_name.label }}
+    {{ form.last_name(class_ = 'form-control', id="last_name", placeholder = "Smith", required = true) }}
+    {{ form.advisor.label }}
+    {{ form.advisor(class_="form-control") }}
+    {{ form.major.label }}
+    {{ form.major(class_="form-control") }}
+    <input id="submit" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
+  </form>
+{% endblock %}

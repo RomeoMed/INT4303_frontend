@@ -2,6 +2,27 @@ main {
 	width: 100% !important;
 }
 
+.middle {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5em;
+    border-radius: 10px;
+    border: 1px solid #000;
+    text-align: center;
+}
+
+.error {
+    width: 100%;
+    margin-top: 1em;
+    color: white;
+    background-color: #0066CC;
+    margin-bottom: 1em;
+}
+
+.middle .message {
+    margin-bottom: 1em;
+}
 
 nav {
 	background-color: #0066cc;

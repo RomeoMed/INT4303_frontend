@@ -1,0 +1,13 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="middle">
+    <div class="error">
+        <center><p>Error Processing Request!</p></center>
+    </div>
+    <div class="message">
+        {{ result.error }}
+    </div>
+</div>
+{% endblock %}
