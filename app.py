@@ -116,6 +116,8 @@ def forgot():
     return render_template('forms/forgot')
 
 
+
+
 if __name__ == '__main__':
     # _logger.info('Server is Listening.....')
     # TODO: temporary for testing. This will be removed from the py file

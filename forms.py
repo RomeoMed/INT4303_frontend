@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
 
-
+# I am a change
 class RegisterForm(FlaskForm):
     name = StringField(
         'Username', validators=[DataRequired(), Length(min=6, max=25)]
