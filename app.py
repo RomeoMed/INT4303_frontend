@@ -2,6 +2,7 @@ import logging
 import json
 import requests
 import base64
+import base64
 from logging.handlers import RotatingFileHandler
 from flask import Flask, request, abort, render_template, session, jsonify
 # from flask_cors import CORS
@@ -19,6 +20,13 @@ _logger.addHandler(handler)
 api_base_url = 'http://127.0.0.1:5000/progress-tracker/v1/'
 
 app = Flask(__name__)
+
+with open('config.json') as f:
+    configs = json.load(f)
+api_user = configs.get('user')
+api_pwd = configs.get('password')
+creds = "{}:{}".format(api_user, api_pwd)
+basic_auth = base64.b64encode(creds.encode('utf-8')).decode('utf-8')
 
 
 # logged in user wrapper
@@ -46,23 +54,39 @@ def login():
     return render_template('forms/login.html', form=form)
 
 
-@app.route('/register')
+@app.route('/register', methods=['POST', 'GET'])
 def register():
     session['newUser'] = True
     form = RegisterForm(request.form)
+
     return render_template('forms/register.html', form=form)
+
+
+@app.route('/check_email/<path:email>', methods=['POST'])
+def check_email(email):
+    endpoint = api_base_url + 'check_email_exists/' + email
+    resp = requests.post(endpoint,
+                         headers={"Authorization": "Basic {}".format(basic_auth)})
+    result = json.loads(resp.text)
+    exists = result.get('exists')
+
+    return jsonify({'exists': exists})
 
 
 @app.route('/main', methods=['POST'])
 def main():
     new_user = session['newUser']
-    email = request.form.get('name')
+    email = request.form.get('email')
     psw = request.form.get('password')
+    first = request.form.get('firstname')
+    last = request.form.get('lastname')
 
     session['user_email'] = email
     data = {
         'user_email': email,
-        'password': psw
+        'password': psw,
+        'firstname': first,
+        'lastname': last
     }
 
     if new_user:
@@ -74,27 +98,26 @@ def main():
         endpoint, json=data,
         headers={
             'Content-Type': 'application/json',
+            "Authorization": "Basic {}".format(basic_auth)
         }
     )
     result = json.loads(resp.text)
-
     if result.get('code') >= 400:
         return render_template('pages/error.html', result=result)
 
     if result.get('code') <= 201:
-        session['access_token'] = result.get('access_token')
-
         endpoint = api_base_url + 'getUserRole'
         resp = requests.post(
-            endpoint, data=jsonify({'user_email': email}),
+            endpoint, data=json.dumps({'user_email': email}),
             headers={
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + session['access_token']
+                "Authorization": "Basic {}".format(basic_auth)
             }
         )
 
-        result = json.loads(resp.txt)
-        if result.get('role') == 'Student':
+        result = json.loads(resp.text)
+        role = result.get('user_role')
+        if role == 'Student':
             if url == 'signUpGate':
                 form = DetailsForm(request.form)
                 return render_template('forms/details_form.html', form=form)
@@ -106,6 +129,30 @@ def main():
     return render_template('pages/content.html')
 
 
+@app.route('/course_form', methods=['POST'])
+@login_required
+def course_form():
+    major = request.form.get('major')
+    user_email = session.get('user_email')
+    data = {
+        "user_email": user_email,
+        "major": major
+    }
+
+    endpoint = api_base_url + '/getProgramCourses'
+    resp = requests.post(
+        endpoint, json=data,
+        headers={
+            'Content-Type': 'application/json',
+            "Authorization": "Basic {}".format(basic_auth)
+        }
+    )
+
+@app.route('/testing', methods=['POST', 'GET'])
+def testing():
+    return render_template('forms/flowchart.html')
+
+
 @app.route('/test', methods=['POST', 'GET'])
 def test():
     form = DetailsForm(request.form)
@@ -114,8 +161,6 @@ def test():
 @app.route('/forgot')
 def forgot():
     return render_template('forms/forgot')
-
-
 
 
 if __name__ == '__main__':

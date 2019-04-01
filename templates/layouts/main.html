@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Step-by-Step My Child and I</title>
+        <title>Progress Tracker</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}"/>
         <script type= 'text/javascript' src="{{ url_for('static', filename='js/libs/jquery-3.3.1.js') }}"></script>
@@ -13,7 +13,7 @@
             {% block header %}
 		    <nav>
 			    <ul class="nav justify-content-end">
-                    {% if session.logged_id %}
+                    {% if session.logged_id == True %}
                     <li class="nav-item">
 					    <a class="nav-link active" href="#">Logout</a>
 				    </li>

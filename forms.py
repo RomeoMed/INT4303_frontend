@@ -1,13 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SelectField
+from wtforms import PasswordField, StringField, SelectField, BooleanField
 from wtforms.validators import DataRequired, EqualTo, Length
 
-# Set your classes here.
 
-# I am a change
 class RegisterForm(FlaskForm):
-    name = StringField(
-        'Username', validators=[DataRequired(), Length(min=6, max=25)]
+    firstname = StringField(
+        'First Name', validators=[DataRequired(), Length(min=6, max=40)]
+    )
+    lastname = StringField(
+        'Last Name', validators=[DataRequired(), Length(min=6, max=40)]
     )
     email = StringField(
         'Email', validators=[DataRequired(), Length(min=6, max=40)]
@@ -23,7 +24,7 @@ class RegisterForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    name = StringField('Username', [DataRequired()])
+    email = StringField('Email', [DataRequired()])
     password = PasswordField('Password', [DataRequired()])
 
 
@@ -34,13 +35,11 @@ class ForgotForm(FlaskForm):
 
 
 class DetailsForm(FlaskForm):
-    first_name = StringField('First Name', [DataRequired()])
-    last_name = StringField('Last Name', [DataRequired()])
     major = SelectField(
         'Major',
         [DataRequired()],
-        choices=[('BBA', 'Business Administration (BBA)'),
-                 ('BSIT', 'Information Technology (BSIT)')],
+        choices=[('BS-BA', 'Business Administration (BBA)'),
+                 ('BS-IT', 'Information Technology (BSIT)')],
     )
     advisor = SelectField(
         'Advisor',
@@ -48,3 +47,7 @@ class DetailsForm(FlaskForm):
         choices=[('sjanes@ltu.edu', 'Stefanie Janes'),
                  ('test@test.edu', 'Test Advisor')]
     )
+
+
+class CourseForm(FlaskForm):
+    test = BooleanField('test')

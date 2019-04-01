@@ -6,14 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}"/>
-        <script type= 'text/javascript' src="{{ url_for('static', filename='js/libs/jquery-3.3.1.js') }}"></script>
     </head>
     <body class="form-only-page">
         <header>
             {% block header %}
 		    <nav>
 			    <ul class="nav justify-content-end">
-                    {% if session.logged_in %}
+                    {% if session.logged_in == False %}
                     <li class="nav-item">
 					    <a class="nav-link active" href="#">Home</a>
 				    </li>
@@ -51,5 +50,7 @@
         {% endwith %}
         {% block content %}{% endblock %}
         </div>
+        <script type= 'text/javascript' src="{{ url_for('static', filename='js/libs/jquery-3.3.1.js') }}"></script>
+        <script type= 'text/javascript' src="{{ url_for('static', filename='js/form.js') }}"></script>
     </body>
 </html>

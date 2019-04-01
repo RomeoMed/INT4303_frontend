@@ -29,14 +29,6 @@ nav {
 	color: #fff;
 }
 
-.tile {
-	width: 40%;
-	display: inline-block;
-	margin: 0.3em;
-	color: #000;
-	background-color: green;
-}
-
 .col-sm-3 {
 	text-align: center;
 }
@@ -154,3 +146,61 @@ body {
 .main_row {
 	margin-top: 3em;
 }
+
+.tile {
+	width: 100%;
+	display: inline-block;
+	margin: 0.3em;
+	color: #000;
+	background-color: #e9e9e9;
+	border: 1px solid #000000;
+	border-radius: 10px;
+	height: 100px;
+}
+
+.flowchart {
+    margin-top: 2em;
+}
+
+.flow_header {
+    color: #f2f2f2;
+    background-color: #7EB6FF;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.tile {
+    position: relative;
+}
+
+.check {
+    position: absolute;
+    bottom: 10px;
+    margin-left: 15%;
+}
+
+.flow_btn {
+    margin-top: 5em;
+}
+
+.error_highlight {
+    border: 2px solid red !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.err, .email_err {
+    font-size: 16px;
+    color: red;
+}
+
+form input, form select {
+    margin-bottom: 1em;
+}
+
+form {
+    margin-top: 2em;
+}
+

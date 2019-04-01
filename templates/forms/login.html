@@ -3,7 +3,7 @@
 {% block content %}
   <form method="post" class="form" action="/main" name="login">
     <h3 class="form-heading">Login <a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.name(class_ = 'form-control first-input', id="username", placeholder = "Username", required = true, autofocus = true) }}
+    {{ form.email(class_ = 'form-control first-input', id="email", placeholder = "Email", required = true, autofocus = true) }}
     {{ form.password(class_ = 'form-control last-input', id="password", placeholder = "Password", required = true) }}
     <p class="pull-left"><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
     <input id="submit" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
