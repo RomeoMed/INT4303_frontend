@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SelectField, BooleanField
+from wtforms import PasswordField, StringField, SelectField, BooleanField, FieldList, FormField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 
@@ -49,5 +49,11 @@ class DetailsForm(FlaskForm):
     )
 
 
+class CourseEntryForm(FlaskForm):
+    #course_id = StringField()
+    #course_number = StringField()
+    course_name = StringField()
+
+
 class CourseForm(FlaskForm):
-    test = BooleanField('test')
+    courses = FieldList(FormField(CourseEntryForm), min_entries=1)

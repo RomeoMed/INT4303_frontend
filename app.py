@@ -8,6 +8,7 @@ from flask import Flask, request, abort, render_template, session, jsonify
 # from flask_cors import CORS
 from functools import wraps
 from forms import *
+from site_libs import helpers
 
 logPath = 'logs/frontend.log'
 _logger = logging.getLogger("progress_tracker")
@@ -94,28 +95,15 @@ def main():
     else:
         url = 'signInGate'
     endpoint = api_base_url + url
-    resp = requests.post(
-        endpoint, json=data,
-        headers={
-            'Content-Type': 'application/json',
-            "Authorization": "Basic {}".format(basic_auth)
-        }
-    )
-    result = json.loads(resp.text)
+    result = _post_api_request(data, endpoint)
+
     if result.get('code') >= 400:
         return render_template('pages/error.html', result=result)
 
     if result.get('code') <= 201:
         endpoint = api_base_url + 'getUserRole'
-        resp = requests.post(
-            endpoint, data=json.dumps({'user_email': email}),
-            headers={
-                'Content-Type': 'application/json',
-                "Authorization": "Basic {}".format(basic_auth)
-            }
-        )
 
-        result = json.loads(resp.text)
+        result = _post_api_request(json.dumps({'user_email': email}, endpoint))
         role = result.get('user_role')
         if role == 'Student':
             if url == 'signUpGate':
@@ -140,13 +128,8 @@ def course_form():
     }
 
     endpoint = api_base_url + '/getProgramCourses'
-    resp = requests.post(
-        endpoint, json=data,
-        headers={
-            'Content-Type': 'application/json',
-            "Authorization": "Basic {}".format(basic_auth)
-        }
-    )
+    result = _post_api_request(data, endpoint)
+
 
 @app.route('/testing', methods=['POST', 'GET'])
 def testing():
@@ -155,12 +138,46 @@ def testing():
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():
-    form = DetailsForm(request.form)
-    return render_template('forms/details_form.html', form=form)
+    data = {
+        "user_email": 'rmedoro@ltu.edu',
+        "major": 'BS-IT'
+    }
+
+    endpoint = api_base_url + 'getProgramCourses'
+    result = _post_api_request(data, endpoint)
+    result = helpers.update_course_results(result)
+
+    return render_template('forms/completed_courses.html', result=result)
+
+
+@app.route('/update_progress', methods=['POST'])
+def update_progress():
+    data = request.form
+
+    request_obj = helpers.process_request(data)
+    if request_obj:
+        endpoint = api_base_url + 'initialCourseIntake/' + 'rmedoro@ltu.edu'
+
+        result = _post_api_request(request_obj, endpoint)
+        return render_template('<html><p>Success: ' + str(result.get('success')) + '</p></br><p>Code: ' + str(result.get('code')) + '</p></br>' + '<p>Message: ' + result.get('message') + '</p></html?')
+
+
 
 @app.route('/forgot')
 def forgot():
     return render_template('forms/forgot')
+
+
+def _post_api_request(data, endpoint):
+    resp = requests.post(
+        endpoint, json=data,
+        headers={
+            'Content-Type': 'application/json',
+            "Authorization": "Basic {}".format(basic_auth)
+        }
+    )
+
+    return json.loads(resp.text)
 
 
 if __name__ == '__main__':

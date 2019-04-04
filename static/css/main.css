@@ -204,3 +204,42 @@ form {
     margin-top: 2em;
 }
 
+
+.course_input {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.intake_row label, .intake_row input {
+    display: block;
+}
+
+.checkbox {
+    margin-right: .5em !important;
+    transform: scale(1.5);
+}
+
+.intake_row {
+    margin-top: .5em;
+    margin-bottom: 2em;
+    font-size: 18px;
+    border-bottom: 1px solid #d2d2d2;
+}
+
+.checkbox, .for_checkbox {
+    display: inline-block !important;
+}
+
+.for_checkbox {
+    margin-right: 2em;
+    width: 20em;
+}
+
+#submit_complete {
+    margin-top: 1em;
+}
+
+.form-heading {
+    margin-bottom: 1em;
+}

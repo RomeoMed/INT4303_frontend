@@ -1,0 +1,26 @@
+{% extends 'layouts/form.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  <form method="post" class="form" action="/update_progress" name="course_intake">
+    <center><h3 class="form-heading">Check all the courses you've already completed<a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3></center>
+    <div class="row">
+        <div class="course_input">
+            {% for res in result %}
+                {% set name = res.get('course_number') %}
+                {% if 'xxx' in name.lower() %}
+                    <div class="row intake_row">
+                        <label>{{ res.get('course_name') }}</label>
+                        <input id="{{ res.get('course_id') }}" name="{{ res.get('course_id') }}" type="text" placeholder="Course Number Ex: INT_3131" class="form-control"/>
+                    </div>
+                {% else %}
+                    <div class="row intake_row">
+                        <label class="for_checkbox">{{ res.get('course_name') }}</label>
+                        <input class="checkbox" id="{{ res.get('course_id') }}" type="checkbox" name="{{ res.get('course_id') }}" value="{{ res.get('course_number') }}">{{ res.get('course_number') }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <input id="submit_complete" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
+  </form>
+{% endblock %}
