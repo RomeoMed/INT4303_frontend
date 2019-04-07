@@ -1,0 +1,45 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <form method="post" class="form" action="/submit_request" name="details" id="flowchart_form">
+        {% for k,v in result.items() %}
+        {% if k == 'required' %}
+            {% set head_stat = 'Required' %}
+        {% elif k == 'waiting_approval' %}
+            {% set head_stat = 'Waiting Approval' %}
+        {% elif k == 'in_progress' %}
+            {% set head_stat = 'In Progress' %}
+        {% else %}
+            {% set head_stat = 'Complete' %}
+        {% endif %}
+            <div class="col-lg-3 flowchart">
+                <div class="flow_header">
+                    <center><p>{{ head_stat }}</p></center>
+                </div>
+                {% for item in v %}
+                    <div class="col-lg-12">
+                        {% set course_num = item.get('course_number') %}
+                        {% set credits = item.get('credits') %}
+                        {% set course_id = item.get('course_id') %}
+                        {% set name = item.get('course_name') %}
+                        {% if k == 'required' and 'xxx' in course_num.lower() %}
+                            <div class="tile" id="{{ course_id }}">
+                                <center><b>{{ course_num }}</b></center><br/>
+                                <p><b>Credits: </b>{{ credits }}</p>
+                                <center><p>{{ name }}</p></center>
+                                <input type="text" placeholder="ex: INT_2123"/>
+                            </div>
+                        {% else %}
+                            <div class="tile" id="{{ course_id }}">
+                                <center><b>{{ course_num }}</b></center><br/>
+                                <p><b>Credits: </b>{{ credits }}</p>
+                                <center><p>{{ name }}</p></center>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <input id="submit" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block flow_btn">
+    </form>
+{% endblock %}

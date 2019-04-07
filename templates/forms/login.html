@@ -1,11 +1,13 @@
 {% extends 'layouts/form.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-  <form method="post" class="form" action="/main" name="login">
-    <h3 class="form-heading">Login <a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.email(class_ = 'form-control first-input', id="email", placeholder = "Email", required = true, autofocus = true) }}
-    {{ form.password(class_ = 'form-control last-input', id="password", placeholder = "Password", required = true) }}
-    <p class="pull-left"><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
-    <input id="submit" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
-  </form>
+    <form method="post" class="form" action="/login" name="login">
+        <h3 class="form-heading">Login <a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+        <div class="email_err hidden"><span style="color:red">Email account already exists!</span></div>
+        {{ form.email(class_ = 'form-control first-input', id="email", placeholder = "Email", required = true, autofocus = true) }}
+        {{ form.password(class_ = 'form-control last-input', id="password", placeholder = "Password", required = true) }}
+        <input id="submit" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
+        <center class="sign-up-link"><p><a href="{{ url_for('forgot') }}">Forgot Password?</a></p></center>
+        <center class="sign-up-link"><p>Don't Have an Account? <a href="{{ url_for('register') }}">Sign Up Now</a></p></center>
+    </form>
 {% endblock %}

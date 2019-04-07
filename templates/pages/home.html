@@ -3,8 +3,34 @@
 {% block content %}
 
 <div class="row">
-  <div class="image_box">
-    <p>Log In to start</p>
-  </div>
+    <div class="row">
+        <div class="landing_img">
+            <img src="{{ url_for('static', filename='img/students.png') }}"/>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="tile_row">
+            <div class="main-tile">
+                <a href="{{ url_for('login') }}">
+                    <center><h4>Login</h4></center>
+                    <img src="{{ url_for('static', filename='img/login.png') }}" />
+                </a>
+            </div>
+            <div class="main-tile">
+                <a href="{{ url_for('register') }}">
+                    <center><h4>Register</h4></center>
+                    <img src="{{ url_for('static', filename='img/register.png') }}" />
+                </a>
+            </div>
+            <div class="main-tile">
+                <a href="{{ url_for('register') }}">
+                    <center><h4>Contact Us</h4></center>
+                    <img src="{{ url_for('static', filename='img/contact_us.png') }}" />
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

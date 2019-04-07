@@ -7,15 +7,18 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}"/>
         <script type= 'text/javascript' src="{{ url_for('static', filename='js/libs/jquery-3.3.1.js') }}"></script>
-        </head>
+    </head>
     <body>
         <header>
             {% block header %}
-		    <nav>
+		    <nav id="stickynav" class="stickynav">
 			    <ul class="nav justify-content-end">
                     {% if session.logged_id == True %}
+                    <div class="header_img">
+                        <img src="{{ url_for('static', filename='img/ltu.png') }}"/>
+                    </div>
                     <li class="nav-item">
-					    <a class="nav-link active" href="#">Logout</a>
+					    <a class="nav-link active" href="{{ url_for('logout') }}">Logout</a>
 				    </li>
 				    <li class="nav-item">
 					    <a class="nav-link" href="#">About US</a>
@@ -27,12 +30,9 @@
 					    <a class="nav-link" href="#">Home</a>
 				    </li>
 			        {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Sign in</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">Sign UP</a>
-                    </li>
+                    <div class="header_img">
+                        <img src="{{ url_for('static', filename='img/ltu.png') }}"/>
+                    </div>
                 {% endif %}
                 </ul>
 		    </nav>
@@ -49,14 +49,22 @@
             {% endfor %}
             {% endif %}
         {% endwith %}
-
         {% block content %}{% endblock %}
         </main>
         <div id="footer">
             <div class="container">
+                {% block footer %}
+                <div class="row footer-row">
+                    <div class="col-sm-3">
+                        <div class="ltu_image">
+                            <img src="{{ url_for('static', filename='img/footer.png') }}"/>
+                        </div>
+                    </div>
+                </div>
                 <p>Your Company &copy; All Rights Reserved.</p>
-                {% block footer %}{% endblock %}
+                {% endblock %}
             </div>
         </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>

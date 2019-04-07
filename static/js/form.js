@@ -8,14 +8,14 @@ $(document).ready(function(){
         }
     });
 
-    $('#email').focusout(function(){
+    $('#reg #email').focusout(function(){
         $.ajax({
             url: '/check_email/' + $('#email').val(),
             type: 'POST',
             success: function(response) {
                 if (response.exists === 1) {
                     $('#email').addClass('error_highlight');
-                    $('#reg .email_err').removeClass('hidden');
+                    $('.email_err').removeClass('hidden');
                 }
             },
             error: function(error) {
@@ -24,7 +24,7 @@ $(document).ready(function(){
         });
     });
 
-    $('#password').keyup(function(){
+    $('#reg #password').keyup(function(){
         var pwd = $('#password');
         var confirm = $('#confirm');
         var err = $('#reg .err');
@@ -40,9 +40,9 @@ $(document).ready(function(){
         }
     });
 
-    $('#email').keyup(function(){
-        if (!$('#reg .email_err').hasClass('hidden')) {
-            $('#reg .email_err').addClass('hidden');
+    $('#reg #email').keyup(function(){
+        if (!$('.email_err').hasClass('hidden')) {
+            $('.email_err').addClass('hidden');
         }
         if ($('#email').hasClass('error_highlight')) {
             $('#email').removeClass('error_highlight');

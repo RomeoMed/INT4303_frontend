@@ -1,7 +1,7 @@
 {% extends 'layouts/form.html' %}
 {% block title %}Register{% endblock %}
 {% block content %}
-    <form method="post" action='/main' class="form" id="reg">
+    <form method="post" action='/register' class="form" id="reg">
         <h3 class="form-heading">Register <a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
         <div class="err hidden"><span style="color:red">Passwords must match!</span></div>
         <div class="email_err hidden"><span style="color:red">Email account already exists!</span></div>
@@ -10,7 +10,7 @@
         {{ form.email(class_ = 'form-control', placeholder = form.email.label.text, required = true) }}
         {{ form.password(class_ = 'form-control', placeholder = form.password.label.text, required = true) }}
         {{ form.confirm(class_ = 'form-control last-input', placeholder = form.confirm.label.text, required = true) }}
-        <p class="pull-left"><a href="{{ url_for('login') }}">Login</a></p>
         <input id="reg_form" type="submit" value="Register" class="btn btn-primary btn-lg btn-block">
+        <center class="sign-up-link"><p>Already Have an Account? <a href="{{ url_for('login') }}">Login</a></p></center>
     </form>
 {% endblock %}

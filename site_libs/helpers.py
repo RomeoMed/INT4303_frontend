@@ -33,3 +33,35 @@ def process_request(data):
 
             return_list.append(tmp_dict)
     return return_list
+
+
+def process_flowchart_result(result):
+    response = {}
+    required = []
+    waiting = []
+    in_prog = []
+    complete = []
+    for res in result:
+        status = res.get('class_status')
+        tmp_dict = {
+            'course_number': res.get('course_number'),
+            'credits': res.get('credits'),
+            'course_id': res.get('course_id'),
+            'course_name': res.get('course_name')
+        }
+
+        if status == 'required':
+            required.append(tmp_dict)
+        elif status == 'waiting_approval':
+            waiting.append(tmp_dict)
+        elif status == 'in_progress':
+            in_prog.append(tmp_dict)
+        elif status == 'complete':
+            complete.append(tmp_dict)
+
+    response['required'] = required
+    response['waiting_approval'] = waiting
+    response['in_progress'] = in_prog
+    response['complete'] = complete
+
+    return response
