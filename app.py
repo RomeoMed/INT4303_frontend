@@ -179,10 +179,10 @@ def test():
 @authorize
 def update_progress():
     data = request.form
-
+    user_email = session.get('user_email')
     request_obj = helpers.process_request(data)
     if request_obj:
-        endpoint = api_base_url + 'initialCourseIntake/' + 'rmedoro@ltu.edu'
+        endpoint = api_base_url + 'initialCourseIntake/' + user_email
 
         result = _post_api_request(request_obj, endpoint)
         if result.get('code') >= 400:
