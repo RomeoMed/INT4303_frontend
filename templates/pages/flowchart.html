@@ -5,12 +5,16 @@
         {% for k,v in result.items() %}
         {% if k == 'required' %}
             {% set head_stat = 'Required' %}
+            {% set tile_class = 'red' %}
         {% elif k == 'waiting_approval' %}
             {% set head_stat = 'Waiting Approval' %}
+            {% set tile_class = 'yellow' %}
         {% elif k == 'in_progress' %}
             {% set head_stat = 'In Progress' %}
+            {% set tile_class = 'blue' %}
         {% else %}
             {% set head_stat = 'Complete' %}
+            {% set tile_class = 'green' %}
         {% endif %}
             <div class="col-lg-3 flowchart">
                 <div class="flow_header">
@@ -23,17 +27,21 @@
                         {% set course_id = item.get('course_id') %}
                         {% set name = item.get('course_name') %}
                         {% if k == 'required' and 'xxx' in course_num.lower() %}
-                            <div class="tile" id="{{ course_id }}">
-                                <center><b>{{ course_num }}</b></center><br/>
-                                <p><b>Credits: </b>{{ credits }}</p>
-                                <center><p>{{ name }}</p></center>
-                                <input type="text" placeholder="ex: INT_2123"/>
+                            <div class="tile {{ tile_class }} input_tile" id="{{ course_id }}">
+                                <a class="tile_anchor">
+                                    <center class="c_title"><b>{{ course_num }}</b></center>
+                                    <p><b>Credits: </b>{{ credits }}</p>
+                                    <center><p>{{ name }}</p></center>
+                                    <input type="text" placeholder="ex: INT_2123"/>
+                                </a>
                             </div>
                         {% else %}
-                            <div class="tile" id="{{ course_id }}">
-                                <center><b>{{ course_num }}</b></center><br/>
-                                <p><b>Credits: </b>{{ credits }}</p>
-                                <center><p>{{ name }}</p></center>
+                            <div class="tile {{ tile_class }}" id="{{ course_id }}">
+                                <a class="tile_anchor">
+                                    <center class="c_title"><b>{{ course_num }}</b></center>
+                                    <p><b>Credits: </b>{{ credits }}</p>
+                                    <center><p>{{ name }}</p></center>
+                                </a>
                             </div>
                         {% endif %}
                     </div>

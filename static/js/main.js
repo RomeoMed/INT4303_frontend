@@ -1,4 +1,15 @@
 $(document).ready(function(){
+    $('.tile_anchor').click(function(){
+        var tile = $(this).parent();
+        if (tile.hasClass('selected')) {
+            if (confirm('Cancel selection?')) {
+                tile.removeClass('selected');
+            } else {
+            }
+        } else {
+            tile.addClass('selected');
+        }
+    });
 });
 
 function fixDiv() {
