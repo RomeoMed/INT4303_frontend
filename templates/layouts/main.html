@@ -13,7 +13,7 @@
             {% block header %}
 		    <nav id="stickynav" class="stickynav">
 			    <ul class="nav justify-content-end">
-                    {% if session.logged_id == True %}
+                    {% if session.logged_in == True %}
                     <div class="header_img">
                         <img src="{{ url_for('static', filename='img/ltu.png') }}"/>
                     </div>

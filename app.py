@@ -71,10 +71,10 @@ def login():
             session['user_email'] = email
             endpoint = api_base_url + 'getUserRole'
 
-            result = _post_api_request(json.dumps({'user_email': email}, endpoint))
+            result = _post_api_request({'user_email': email}, endpoint)
             role = result.get('user_role')
 
-            if role == 'student':
+            if role == 'Student':
                 return redirect(url_for('flowchart'))
             else:
                 #TODO: make api call for advisor page.
