@@ -365,3 +365,38 @@ form {
     color: #000;
     text-decoration: none;
 }
+
+#student_select {
+    width: 45%;
+   /* margin-left: auto;
+    margin-right: auto; */
+}
+
+#student_info {
+    padding-top: 1em;
+}
+
+.student_form {
+    margin-left: 4em;
+}
+
+.inner_nav li {
+    float: left !important;
+}
+
+.admin_view {
+    margin-top: 2em;
+}
+
+.course_list {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inner_nav li.active {
+    background-color: #0066cc;
+}
+
+.inner_nav li.active > a {
+    color: #fff !important;
+}

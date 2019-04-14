@@ -10,7 +10,77 @@ $(document).ready(function(){
             tile.addClass('selected');
         }
     });
+
+    $("#student_select").click(function(){
+        $('#s_name').text('');
+        $('#s_id').text('');
+        $('#s_prog').text('');
+        $('#s_email').text('');
+        var selected_student = $(this).children("option:selected").val();
+        var data = { student_id: selected_student };
+        $.ajax({
+            type: 'POST',
+            url: '/get_student_progress',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response){
+                var user_id = response.user_id;
+                var user_email = response.email;
+                var name = response.name;
+                var prog = response.program;
+
+                $('#s_name').text(name);
+                $('#s_id').text(user_id);
+                $('#s_prog').text(prog);
+                $('#s_email').text(user_email);
+
+                var complete = response.complete;
+                var in_progress = response.in_progress;
+                var waiting_app = response.waiting_approval;
+                var required = response.required;
+
+                var html = create_form(complete, false);
+                $('#completed_cs .course_list').html(html);
+
+                html = create_form(in_progress, true);
+                $('#in_prog_cs .course_list').html(html);
+
+                html = create_form(waiting_approval, true);
+                $('#waiting_cs .course_list').html(html);
+
+                html = create_form(required, false);
+                $('#required_cs .course_list').html(html);
+            },
+            error: function(xhr, textStatus, error){
+                console.log(xhr.statusText);
+                console.log(textStatus);
+                console.log(error);
+            }
+        });
+    });
 });
+
+var create_form = function(input, checkbox) {
+    var html = '<form action="/admin_update_courses" method="POST" class="form">';
+
+    for (var i=0; i < input.length; i++) {
+        var cs_object = input[i];
+        var c_id = cs_object.course_id;
+        var c_name = cs_object.course_name;
+        var c_number = cs_object.course_number;
+        var credits = cs_object.credits;
+        if (checkbox === true) {
+            html += '<p class="admin_p"><input type="checkbox" value="approve_' + c_id + '" class="admin_checkbox"/>';
+            html += '<input type="checkbox" value="deny_' + c_id + '" class="admin_checkbox"/>';
+        } else {
+            html += '<p class="admin_p">';
+        }
+        html += '<span>' + c_number + ' ' + c_name + ' credits: ' + credits + '</span></p>';
+    }
+    html += '<input type="button" value="submit"/></form>';
+
+    return html
+};
 
 function fixDiv() {
     var $div = $("#stickynav");

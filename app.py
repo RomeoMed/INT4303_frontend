@@ -77,8 +77,22 @@ def login():
             if role == 'Student':
                 return redirect(url_for('flowchart'))
             else:
-                #TODO: make api call for advisor page.
-                print('test')
+                form = AdminForm(request.form)
+                endpoint = api_base_url + 'getAllStudents/' + session['user_email']
+                resp = requests.post(endpoint,
+                                     headers={"Authorization": "Basic {}".format(basic_auth)})
+                data = json.loads(resp.text)
+
+                student_list = []
+                for student in data:
+                    student_id = student[0]
+                    email = student[1]
+
+                    student_list.append((student_id, email))
+
+                form.students.choices = student_list
+
+                return render_template('forms/admin_form.html', form=form)
     else:
         form = LoginForm(request.form)
         return render_template('forms/login.html', form=form)
@@ -118,7 +132,23 @@ def register():
             if role == 'Student':
                 form = DetailsForm(request.form)
                 return render_template('forms/details_form.html', form=form)
-        return render_template('forms/admin_form.html')
+            else:
+                form = AdminForm(request.form)
+                endpoint = api_base_url + 'getAllStudents/' + session['user_email']
+                resp = requests.post(endpoint,
+                                     headers={"Authorization": "Basic {}".format(basic_auth)})
+                data = json.loads(resp.text)
+
+                student_list = []
+                for student in data.get('data'):
+                    student_id = student.get('id')
+                    email = student.get('email')
+
+                    student_list.append((student_id, email))
+
+                form.students.choices = student_list
+
+                return render_template('forms/admin_form', result=data)
 
 
 @app.route('/check_email/<path:email>', methods=['POST'])
@@ -212,6 +242,24 @@ def flowchart():
         result = helpers.update_course_results(result)
         result = helpers.process_flowchart_result(result)
     return render_template('pages/flowchart.html', result=result)
+
+
+@app.route('/get_student_progress', methods=['POST'])
+@authorize
+def admin_student_progress():
+    data = request.get_json()
+    student_id = data.get('student_id')
+    advisor = session['user_email']
+    endpoint = api_base_url + 'adminGetStudentProgress'
+    post_data = {'student_id': student_id, 'advisor': advisor}
+
+    result = _post_api_request(post_data, endpoint)
+    if result.get('code') >= 400:
+        return render_template('pages/error.html', result=result)
+    else:
+        data = result.get('return_obj')
+
+        return jsonify(data)
 
 
 @app.route('/forgot')

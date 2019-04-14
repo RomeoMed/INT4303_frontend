@@ -1,0 +1,60 @@
+{% extends 'layouts/form.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <center><h3 class="form-heading">Student Manager<a href="{{ url_for('main') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3></center>
+    <div class="col-sm-5">
+        <form method="post" class="form student_form" action="/admin_student_select" name="student">
+            {{ form.students.label }}
+            {{ form.students(class_="form-control", id="student_select", size="8") }}
+        </form>
+    </div>
+    <div class="col-sm-6" id="student_info">
+        <fieldset id="student_field">
+            <legend>Student Info</legend>
+            <p><b>   Name: </b>&nbsp;&nbsp;<span id="s_name"></span></p>
+            <p><b>Program: </b> &nbsp;&nbsp;<span id="s_prog"></span></p>
+            <p><b>  Email: </b> &nbsp;&nbsp;<span id="s_email"></span></p>
+            <p><b>ID number: </b> &nbsp;&nbsp;<span id="s_id"></span></p>
+        </fieldset>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 admin_view">
+            <div class="nav-tabs">
+                <ul class="nav inner_nav">
+                    <li class="nav-item active" id="complete">
+					    <a class="nav-link" href="#">Complete</a>
+				    </li>
+                    <li class="nav-item" id="in_progress">
+					    <a class="nav-link" href="#">In Progress</a>
+				    </li>
+                    <li class="nav-item" id="waiting_approval">
+					    <a class="nav-link active" href="#">Waiting Approval</a>
+				    </li>
+                    <li class="nav-item" id="required">
+					    <a class="nav-link active" href="#">Required</a>
+				    </li>
+                </ul>
+            </div>
+            <div class="col-lg-12" id="completed_cs">
+                <div class="col-lg-8 course_list">
+
+                </div>
+            </div>
+            <div class="col-lg-12 hide" id="in_prog_cs">
+                <div class="col-lg-8 course_list">
+
+                </div>
+            </div>
+            <div class="col-lg-12 hide" id="waiting_cs">
+                <div class="col-lg-8 course_list">
+
+                </div>
+            </div>
+            <div class="col-lg-12 hide" id="required_cs">
+                <div class="col-lg-8 course_list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

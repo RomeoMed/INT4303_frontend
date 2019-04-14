@@ -57,3 +57,8 @@ class CourseEntryForm(FlaskForm):
 
 class CourseForm(FlaskForm):
     courses = FieldList(FormField(CourseEntryForm), min_entries=1)
+
+
+class AdminForm(FlaskForm):
+    students = SelectField('Students',
+                           choices=[])
