@@ -400,3 +400,25 @@ form {
 .inner_nav li.active > a {
     color: #fff !important;
 }
+
+.admin_input {
+    display: inline-block;
+    margin-left: 1em;
+    margin-right: 1em;
+    text-align: left;
+    background-color: inherit;
+}
+
+.check, .left {
+    width: 20%;
+}
+
+.mid {
+    width: 25%;
+}
+
+.right {
+    width: 25%;
+    text-align: right;
+}
+

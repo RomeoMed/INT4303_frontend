@@ -58,24 +58,43 @@ $(document).ready(function(){
             }
         });
     });
+
+    $(".inner-nav a").click(function(event) {
+        event.preventDefault();
+
+        $('.inner-nav').removeClass("active");
+        $(this).parent().addClass("active");
+        var panel = $(this).attr('href');
+
+        $(".panel").addClass('hide');
+        $(panel).removeClass('hide');
+    });
+
 });
 
 var create_form = function(input, checkbox) {
     var html = '<form action="/admin_update_courses" method="POST" class="form">';
 
     for (var i=0; i < input.length; i++) {
+        var style = 'style="background-color:';
+        if (i%2 === 0) {
+            style += '#fff"';
+        }else{
+            style += '#E8E8E8"';
+        }
+
         var cs_object = input[i];
         var c_id = cs_object.course_id;
         var c_name = cs_object.course_name;
         var c_number = cs_object.course_number;
         var credits = cs_object.credits;
         if (checkbox === true) {
-            html += '<p class="admin_p"><input type="checkbox" value="approve_' + c_id + '" class="admin_checkbox"/>';
-            html += '<input type="checkbox" value="deny_' + c_id + '" class="admin_checkbox"/>';
+            html += '<div class="admin_p row" ' + style + '><div class="admin_input"> <input type="checkbox" value="approve_' + c_id + '" class="admin_checkbox"/>';
+            html += '<input type="checkbox" value="deny_' + c_id + '" class="admin_checkbox"/></div>';
         } else {
-            html += '<p class="admin_p">';
+            html += '<div class="admin_p row" ' + style + '>';
         }
-        html += '<span>' + c_number + ' ' + c_name + ' credits: ' + credits + '</span></p>';
+        html += '<div class="admin_input left">' + c_number + '</div>' + '<div class="admin_input mid">' + c_name + '</div><div class="admin_input right"> credits: ' + credits + '</div></div>';
     }
     html += '<input type="button" value="submit"/></form>';
 
