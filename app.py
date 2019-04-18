@@ -77,7 +77,6 @@ def login():
             if role == 'Student':
                 return redirect(url_for('flowchart'))
             else:
-                form = AdminForm(request.form)
                 endpoint = api_base_url + 'getAllStudents/' + session['user_email']
                 resp = requests.post(endpoint,
                                      headers={"Authorization": "Basic {}".format(basic_auth)})
@@ -89,10 +88,8 @@ def login():
                     email = student[1]
 
                     student_list.append((student_id, email))
-
-                form.students.choices = student_list
-
-                return render_template('forms/admin_form.html', form=form)
+                session['student_list'] = student_list
+            return redirect(url_for('admin_view'))
     else:
         form = LoginForm(request.form)
         return render_template('forms/login.html', form=form)
@@ -133,22 +130,7 @@ def register():
                 form = DetailsForm(request.form)
                 return render_template('forms/details_form.html', form=form)
             else:
-                form = AdminForm(request.form)
-                endpoint = api_base_url + 'getAllStudents/' + session['user_email']
-                resp = requests.post(endpoint,
-                                     headers={"Authorization": "Basic {}".format(basic_auth)})
-                data = json.loads(resp.text)
-
-                student_list = []
-                for student in data.get('data'):
-                    student_id = student.get('id')
-                    email = student.get('email')
-
-                    student_list.append((student_id, email))
-
-                form.students.choices = student_list
-
-                return render_template('forms/admin_form', result=data)
+                return redirect(url_for('admin_view'))
 
 
 @app.route('/check_email/<path:email>', methods=['POST'])
@@ -186,23 +168,24 @@ def course_form():
     return render_template('forms/completed_courses.html', result=result)
 
 
-@app.route('/testing', methods=['POST', 'GET'])
-def testing():
-    return render_template('forms/flowchart.html')
+@app.route('/admin_view', methods=['GET', 'POST'])
+@authorize
+def admin_view():
+    endpoint = api_base_url + 'getAllStudents/' + session['user_email']
+    resp = requests.post(endpoint,
+                         headers={"Authorization": "Basic {}".format(basic_auth)})
+    data = json.loads(resp.text)
 
+    student_list = []
+    for student in data:
+        student_id = student[0]
+        email = student[1]
 
-@app.route('/test', methods=['POST', 'GET'])
-def test():
-    data = {
-        "user_email": 'rmedoro@ltu.edu',
-        "major": 'BS-IT'
-    }
+        student_list.append((student_id, email))
 
-    endpoint = api_base_url + 'getProgramCourses'
-    result = _post_api_request(data, endpoint)
-    result = helpers.update_course_results(result)
-
-    return render_template('forms/completed_courses.html', result=result)
+    form = AdminForm(request.form)
+    form.students.choices = student_list
+    return render_template('forms/admin_form.html', form=form)
 
 
 @app.route('/update_progress', methods=['POST'])
@@ -262,6 +245,48 @@ def admin_student_progress():
         return jsonify(data)
 
 
+@app.route('/submit_flowchart', methods=['POST'])
+@authorize
+def submit_flowchart():
+    user_email = session.get('user_email')
+    input_obj = request.get_json()
+    request_obj = []
+    for item in input_obj:
+        course_id = item.get('id')
+        value = item.get('value')
+        if course_id == value:
+            value = None
+        if '_' in course_id:
+            prefix, course_id = course_id.split('_')
+        request_obj.append({'id': course_id, 'value': value,
+                            'status': 'waiting_approval', 'approved': 0})
+    if request_obj:
+        endpoint = api_base_url + 'updateStudentProgress/' + user_email
+
+        result = _post_api_request(request_obj, endpoint)
+        if result.get('code') >= 400:
+            return render_template('pages/error.html', result=result)
+        else:
+            return jsonify({'redirect_tgt': '/flowchart'})
+
+
+@app.route('/admin_update_courses/<path:current_status>', methods=['POST', 'GET'])
+@authorize
+def admin_update_courses(current_status):
+    if request.method == "GET":
+        return redirect(url_for('admin_view'))
+    else:
+        if current_status == 'in_progress':
+            new_status = 'completed'
+        elif current_status == 'waiting_approval':
+            new_status = 'in_progress'
+
+        form_data = request.form
+        test = form_data.to_dict()
+        test = request.form.to_dict()
+
+
+
 @app.route('/forgot')
 def forgot():
     return render_template('forms/forgot')
@@ -271,7 +296,8 @@ def forgot():
 @authorize
 def logout():
     session.clear()
-    return render_template('forms/login')
+
+    return redirect(url_for('login'))
 
 
 def _post_api_request(data, endpoint):
@@ -288,7 +314,7 @@ def _post_api_request(data, endpoint):
 
 @socketio.on('disconnect')
 def disconnect_user():
-    #logout_user()
+    logout()
     session.clear()
 
 

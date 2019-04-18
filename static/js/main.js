@@ -2,10 +2,7 @@ $(document).ready(function(){
     $('.tile_anchor').click(function(){
         var tile = $(this).parent();
         if (tile.hasClass('selected')) {
-            if (confirm('Cancel selection?')) {
-                tile.removeClass('selected');
-            } else {
-            }
+            tile.removeClass('selected');
         } else {
             tile.addClass('selected');
         }
@@ -39,16 +36,16 @@ $(document).ready(function(){
                 var waiting_app = response.waiting_approval;
                 var required = response.required;
 
-                var html = create_form(complete, false);
+                var html = create_form(complete, false, '');
                 $('#completed_cs .course_list').html(html);
 
-                html = create_form(in_progress, true);
+                html = create_form(in_progress, true, '/in_progress');
                 $('#in_prog_cs .course_list').html(html);
 
-                html = create_form(waiting_approval, true);
+                html = create_form(waiting_app, true, '/waiting_approval');
                 $('#waiting_cs .course_list').html(html);
 
-                html = create_form(required, false);
+                html = create_form(required, false, '');
                 $('#required_cs .course_list').html(html);
             },
             error: function(xhr, textStatus, error){
@@ -70,10 +67,61 @@ $(document).ready(function(){
         $(panel).removeClass('hide');
     });
 
+    $('#flowchart-submit').click(function(e){
+        e.preventDefault();
+        if (!($('.error_msg').hasClass('hide'))) {
+            $('.error_msg').addClass('hide');
+        }
+
+        var request = [];
+        var errors = 0;
+        var el;
+        $('.selected').each(function(){
+            var input;
+            var id = $(this).attr('id');
+            if ($(this).has('input')) {
+                el = $(this).find('input');
+                input = $(el).val();
+            }
+            else {
+                input = id;
+            }
+            if (input === '' || input === null) {
+                el.addClass('error_highlight');
+                errors+=1;
+            }
+            else {
+                request.push({'id': id, 'value': input});
+            }
+        });
+
+        if (errors > 0) {
+            request = [];
+            $('.error_msg').removeClass('hide');
+            return;
+        }
+        else {
+            $.ajax({
+                type: 'POST',
+                url: '/submit_flowchart',
+                contentType: 'application/json',
+                data: JSON.stringify(request),
+                success: function(response){
+                    window.location.href = response.redirect_tgt;
+                },
+                error: function(xhr, textStatus, error){
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                }
+            });
+        }
+    });
+
 });
 
-var create_form = function(input, checkbox) {
-    var html = '<form action="/admin_update_courses" method="POST" class="form">';
+var create_form = function(input, checkbox, current) {
+    var html = '<form action="/admin_update_courses'+ current +'" method="POST" class="form">';
 
     for (var i=0; i < input.length; i++) {
         var style = 'style="background-color:';
@@ -89,14 +137,14 @@ var create_form = function(input, checkbox) {
         var c_number = cs_object.course_number;
         var credits = cs_object.credits;
         if (checkbox === true) {
-            html += '<div class="admin_p row" ' + style + '><div class="admin_input"> <input type="checkbox" value="approve_' + c_id + '" class="admin_checkbox"/>';
-            html += '<input type="checkbox" value="deny_' + c_id + '" class="admin_checkbox"/></div>';
+            html += '<div class="admin_p row" ' + style + '><div class="admin_input"> <input title="Approve/Confirm" type="checkbox" value="' + c_id + '" name="approve_' + c_id + '" class="admin_checkbox"/>';
+            html += '<input title="Deny/Cancel" name="deny_' + c_id + '" type="checkbox" value="' + c_id + '" class="admin_checkbox"/></div>';
         } else {
             html += '<div class="admin_p row" ' + style + '>';
         }
         html += '<div class="admin_input left">' + c_number + '</div>' + '<div class="admin_input mid">' + c_name + '</div><div class="admin_input right"> credits: ' + credits + '</div></div>';
     }
-    html += '<input type="button" value="submit"/></form>';
+    html += '<input value="submit" type="submit"/></form>';
 
     return html
 };

@@ -422,3 +422,7 @@ form {
     text-align: right;
 }
 
+.selected {
+    filter: invert(1);
+}
+
