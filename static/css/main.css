@@ -426,3 +426,8 @@ form {
     filter: invert(1);
 }
 
+.admin_btn {
+    margin-top: 1em;
+}
+
+
