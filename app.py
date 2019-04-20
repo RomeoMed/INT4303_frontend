@@ -232,6 +232,9 @@ def flowchart():
 def admin_student_progress():
     data = request.get_json()
     student_id = data.get('student_id')
+    if 'admin_student' in session:
+        session.pop('admin_student', None)
+    session['admin_student'] = student_id
     advisor = session['user_email']
     endpoint = api_base_url + 'adminGetStudentProgress'
     post_data = {'student_id': student_id, 'advisor': advisor}
@@ -276,15 +279,39 @@ def admin_update_courses(current_status):
     if request.method == "GET":
         return redirect(url_for('admin_view'))
     else:
+        new_status = ''
         if current_status == 'in_progress':
             new_status = 'completed'
         elif current_status == 'waiting_approval':
             new_status = 'in_progress'
 
-        form_data = request.form
-        test = form_data.to_dict()
-        test = request.form.to_dict()
+        course_data = request.form.to_dict()
+        student_id = session['admin_student'] if 'admin_student' in session else None
+        denied_obj = {}
+        approved_obj = {}
 
+        for k, v in course_data.items():
+            garbage, key = k.split('-')
+
+            if 'deny-' in k:
+                denied_obj[key] = v
+            elif 'approve-':
+                approved_obj[key] = v
+
+        request_obj = {
+            'student_id': student_id,
+            'new_status': new_status,
+            'denied': denied_obj,
+            'approved': approved_obj,
+            'advisor': session['user_email']
+        }
+
+        endpoint = api_base_url + 'adminUpdateStudentProgress'
+        result = _post_api_request(request_obj, endpoint)
+        if result.get('code') >= 400:
+            return render_template('pages/error.html', result=result)
+        else:
+            return redirect(url_for('admin_view'))
 
 
 @app.route('/forgot')
