@@ -137,14 +137,14 @@ var create_form = function(input, checkbox, current) {
         var c_number = cs_object.course_number;
         var credits = cs_object.credits;
         if (checkbox === true) {
-            html += '<div class="admin_p row" ' + style + '><div class="admin_input"> <input title="Approve/Confirm" type="checkbox" value="' + c_id + '" name="approve_' + c_id + '" class="admin_checkbox"/>';
-            html += '<input title="Deny/Cancel" name="deny_' + c_id + '" type="checkbox" value="' + c_id + '" class="admin_checkbox"/></div>';
+            html += '<div class="admin_p row" ' + style + '><div class="admin_input"> <input title="Approve/Confirm" type="checkbox" value="' + c_id + '" name="approve-' + c_number + '" class="admin_checkbox"/>';
+            html += '<input title="Deny/Cancel" name="deny-' + c_number + '" type="checkbox" value="' + c_id + '" class="admin_checkbox"/></div>';
         } else {
             html += '<div class="admin_p row" ' + style + '>';
         }
         html += '<div class="admin_input left">' + c_number + '</div>' + '<div class="admin_input mid">' + c_name + '</div><div class="admin_input right"> credits: ' + credits + '</div></div>';
     }
-    html += '<input value="submit" type="submit"/></form>';
+    html += '<input class="btn btn-primary btn-lg btn-block admin_btn" value="submit" type="submit"/></form>';
 
     return html
 };
