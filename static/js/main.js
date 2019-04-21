@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('.tile_anchor').click(function(){
+    $('.selectable .tile_anchor').click(function(){
         var tile = $(this).parent();
         if (tile.hasClass('selected')) {
             tile.removeClass('selected');
@@ -79,6 +79,14 @@ $(document).ready(function(){
         $('.selected').each(function(){
             var input;
             var id = $(this).attr('id');
+            var status;
+            if ($(this).hasClass('red')) {
+                status = 'required';
+            }
+            else if ($(this).hasClass('blue')) {
+                status = 'in_progress';
+            }
+
             if ($(this).has('input')) {
                 el = $(this).find('input');
                 input = $(el).val();
@@ -91,7 +99,7 @@ $(document).ready(function(){
                 errors+=1;
             }
             else {
-                request.push({'id': id, 'value': input});
+                request.push({'id': id, 'value': input, 'status': status});
             }
         });
 
@@ -144,8 +152,12 @@ var create_form = function(input, checkbox, current) {
         }
         html += '<div class="admin_input left">' + c_number + '</div>' + '<div class="admin_input mid">' + c_name + '</div><div class="admin_input right"> credits: ' + credits + '</div></div>';
     }
-    html += '<input class="btn btn-primary btn-lg btn-block admin_btn" value="submit" type="submit"/></form>';
-
+    if (checkbox === true) {
+        html += '<input class="btn btn-primary btn-lg btn-block admin_btn" value="submit" type="submit"/></form>';
+    }
+    else {
+        html += '</form>'
+    }
     return html
 };
 
@@ -161,3 +173,14 @@ function fixDiv() {
 
 $("#stickynav").data("top", $("#stickynav").offset().top); // set original position on load
 $(window).scroll(fixDiv);
+
+function openNav() {
+    document.getElementById("sideNavigation").style.width = "250px";
+    //document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+    document.getElementById("sideNavigation").style.width = "0";
+    //document.getElementById("main").style.marginLeft = "0";
+}
+

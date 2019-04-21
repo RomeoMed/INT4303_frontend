@@ -4,7 +4,6 @@ import requests
 import base64
 from logging.handlers import RotatingFileHandler
 from flask import Flask, request, abort, render_template, session, jsonify, redirect, url_for
-# from flask_cors import CORS
 from functools import wraps
 from forms import *
 from site_libs import helpers
@@ -135,7 +134,7 @@ def register():
 
 @app.route('/check_email/<path:email>', methods=['POST'])
 def check_email(email):
-    endpoint = api_base_url + 'check_email_exists/' + email
+    endpoint = api_base_url + 'checkEmailExists/' + email
     resp = requests.post(endpoint,
                          headers={"Authorization": "Basic {}".format(basic_auth)})
     result = json.loads(resp.text)
@@ -146,7 +145,7 @@ def check_email(email):
 
 @app.route('/main', methods=['POST'])
 def main():
-    print(main)
+    return redirect(url_for('index'))
 
 
 @app.route('/course_form', methods=['POST'])
@@ -255,6 +254,13 @@ def submit_flowchart():
     input_obj = request.get_json()
     request_obj = []
     for item in input_obj:
+        status = item.get('status')
+        if status == 'required':
+            status = 'waiting_approval'
+        elif status == 'in_progress':
+            status = 'complete'
+        else:
+            status = 'waiting_approval'
         course_id = item.get('id')
         value = item.get('value')
         if course_id == value:
@@ -262,7 +268,7 @@ def submit_flowchart():
         if '_' in course_id:
             prefix, course_id = course_id.split('_')
         request_obj.append({'id': course_id, 'value': value,
-                            'status': 'waiting_approval', 'approved': 0})
+                            'status': status, 'approved': 0})
     if request_obj:
         endpoint = api_base_url + 'updateStudentProgress/' + user_email
 

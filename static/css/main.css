@@ -366,12 +366,6 @@ form {
     text-decoration: none;
 }
 
-#student_select {
-    width: 45%;
-   /* margin-left: auto;
-    margin-right: auto; */
-}
-
 #student_info {
     padding-top: 1em;
 }
@@ -431,3 +425,134 @@ form {
 }
 
 
+@media screen and (max-device-width: 799px) {
+    #stickynav {
+        display: none;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #000066;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.5s;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #f2f2f2;
+        display: block;
+        transition: 0.3s
+    }
+
+    .sidenav a:hover, .offcanvas a:focus{
+        color: #f2f2f2;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .topnav {
+        background-color: #0066cc;
+        overflow: hidden;
+    }
+
+    .topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+    .topnav a.active {
+        background-color: #f2f2f2;
+        color: white;
+    }
+
+    a svg{
+        transition:all .5s ease;
+
+        &:hover{
+            #transform:rotate(180deg);
+        }
+    }
+
+    #ico{
+        display: none;
+    }
+
+    .menu{
+        background: #000;
+        display: none;
+        padding: 5px;
+        width: 320px;
+        @include border-radius(5px);
+
+        #transition: all 0.5s ease;
+
+        a{
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 10px 2px;
+            margin: 3px 0;
+            text-decoration: none;
+            background: #444;
+
+            &:nth-child(1){
+            margin-top: 0;
+            @include border-radius(3px 3px 0 0 );
+        }
+        &:nth-child(5){
+            margin-bottom: 0;
+            @include border-radius(0 0 3px 3px);
+        }
+
+        }
+    }
+
+    .form .student_form label {
+        width: 100%;
+        text-align: center;
+    }
+
+    #student_select {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 20px;
+    }
+
+    .student_form {
+        margin-left: 0;
+    }
+}
+
+@media screen and (min-device-width: 800px){
+    .sidenav, .topnav {
+        display: none !important;
+    }
+
+    #student_select {
+        width: 45%;
+    }
+}

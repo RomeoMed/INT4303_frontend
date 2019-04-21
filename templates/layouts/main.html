@@ -33,6 +33,27 @@
                 {% endif %}
                 </ul>
 		    </nav>
+            <div id="sideNavigation" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                {% if session.logged_in == True %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+                <a class="nav-link" href="https://ltu.edu" target="_blank">LTU</a>
+                <a class="nav-link active" href="#">Home</a>
+                {% else %}
+                <a class="{{ url_for('login') }}">Login</a>
+                <a class="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </div>
+
+            <nav class="topnav">
+                <a href="#" onclick="openNav()">
+                    <svg width="30" height="30" id="icoOpen">
+                        <path d="M0,5 30,5" stroke="#000" stroke-width="5"/>
+                        <path d="M0,14 30,14" stroke="#000" stroke-width="5"/>
+                        <path d="M0,23 30,23" stroke="#000" stroke-width="5"/>
+                    </svg>
+                </a>
+            </nav>
             {% endblock %}
         </header>
         <main id="content" role="main" >

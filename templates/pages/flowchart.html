@@ -16,19 +16,25 @@
             {% set head_stat = 'Complete' %}
             {% set tile_class = 'green' %}
         {% endif %}
+            {% set el_id = 'mobile-' + k %}
             <div class="col-lg-3 flowchart">
-                <div class="flow_header">
+                <div class="flow_header" id="{{ el_id }}">
                     <center><p>{{ head_stat }}</p></center>
                 </div>
                 {% for item in v %}
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 fc-content">
                         {% set course_num = item.get('course_number') %}
                         {% set credits = item.get('credits') %}
                         {% set course_id = item.get('course_id') %}
                         {% set name = item.get('course_name') %}
+                        {% if k == 'required' or k == 'in_progress' %}
+                            {% set selectable = 'selectable' %}
+                        {% else %}
+                            {% set selectable = '' %}
+                        {% endif %}
                         {% if k == 'required' and 'xxx' in course_num.lower() %}
-                            <div class="tile {{ tile_class }} input_tile" id="{{ course_id }}">
-                                <a class="tile_anchor">
+                            <div class="tile {{ tile_class }} input_tile {{ el_id }}" id="{{ course_id }}">
+                                <a class="tile_anchor {{ selectable }}">
                                     <center class="c_title"><b>{{ course_num }}</b></center>
                                     <p><b>Credits: </b>{{ credits }}</p>
                                     <center><p>{{ name }}</p></center>
@@ -36,7 +42,7 @@
                                 </a>
                             </div>
                         {% else %}
-                            <div class="tile {{ tile_class }}" id="{{ course_id }}">
+                            <div class="tile {{ tile_class }} {{ el_id }} {{ selectable }}" id="{{ course_id }}">
                                 <a class="tile_anchor">
                                     <center class="c_title"><b>{{ course_num }}</b></center>
                                     <p><b>Credits: </b>{{ credits }}</p>
@@ -51,4 +57,5 @@
         <input id="flowchart-submit" type="submit" value="Submit" class="btn btn-primary btn-lg btn-block flow_btn">
         <center class="hide error_msg"><p style="color:red">Missing Required Fields!</p></center>
     </form>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/flowchart.js') }}"></script>
 {% endblock %}
