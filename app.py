@@ -38,8 +38,6 @@ def authorize(data):
             return data(*args, **kwargs)
         else:
             return redirect(url_for('login'))
-            #form = LoginForm(request.form)
-            #return render_template('forms/login.html', form=form)
 
     return wrap
 
@@ -53,8 +51,16 @@ def index():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        endpoint = api_base_url + 'signInGate'
         email = request.form.get('email')
+        endpoint = api_base_url + 'checkEmailExists/' + email
+        resp = requests.post(endpoint,
+                             headers={"Authorization": "Basic {}".format(basic_auth)})
+        result = json.loads(resp.text)
+        exists = result.get('exists')
+        if not exists:
+            return redirect(url_for('register'))
+
+        endpoint = api_base_url + 'signInGate'
         psw = request.form.get('password')
         data = {
             'user_email': email,
@@ -89,6 +95,8 @@ def login():
                     student_list.append((student_id, email))
                 session['student_list'] = student_list
             return redirect(url_for('admin_view'))
+        else:
+            return abort(500)
     else:
         form = LoginForm(request.form)
         return render_template('forms/login.html', form=form)
@@ -334,15 +342,18 @@ def logout():
 
 
 def _post_api_request(data, endpoint):
-    resp = requests.post(
-        endpoint, json=data,
-        headers={
-            'Content-Type': 'application/json',
-            "Authorization": "Basic {}".format(basic_auth)
-        }
-    )
+    try:
+        resp = requests.post(
+            endpoint, json=data,
+            headers={
+                'Content-Type': 'application/json',
+                "Authorization": "Basic {}".format(basic_auth)
+            }
+        )
 
-    return json.loads(resp.text)
+        return json.loads(resp.text)
+    except Exception as e:
+        return {'code': 500, 'error': 'Something went wrong on our end. Please check back later!'}
 
 
 @socketio.on('disconnect')

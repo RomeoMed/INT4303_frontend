@@ -24,7 +24,7 @@
 					    <a class="nav-link" href="https://ltu.edu" target="_blank">LTU</a>
 				    </li>
 				    <li class="nav-item">
-					    <a class="nav-link" href="#">Home</a>
+					    <a class="nav-link" href="https://www.ltu.edu/ehelp/" target="_blank">eHelp</a>
 				    </li>
 			        {% else %}
                     <div class="header_img">
@@ -38,7 +38,7 @@
                 {% if session.logged_in == True %}
                 <a href="{{ url_for('logout') }}">Logout</a>
                 <a class="nav-link" href="https://ltu.edu" target="_blank">LTU</a>
-                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link" href="https://www.ltu.edu/ehelp/" target="_blank">eHelp</a>
                 {% else %}
                 <a class="{{ url_for('login') }}">Login</a>
                 <a class="{{ url_for('register') }}">Register</a>
