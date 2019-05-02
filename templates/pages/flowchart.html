@@ -33,8 +33,8 @@
                             {% set selectable = '' %}
                         {% endif %}
                         {% if k == 'required' and 'xxx' in course_num.lower() %}
-                            <div class="tile {{ tile_class }} input_tile {{ el_id }}" id="{{ course_id }}">
-                                <a class="tile_anchor {{ selectable }}">
+                            <div class="tile {{ tile_class }} {{ selectable }} input_tile {{ el_id }}" id="{{ course_id }}">
+                                <a class="tile_anchor">
                                     <center class="c_title"><b>{{ course_num }}</b></center>
                                     <p><b>Credits: </b>{{ credits }}</p>
                                     <center><p>{{ name }}</p></center>

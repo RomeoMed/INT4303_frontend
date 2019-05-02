@@ -15,7 +15,6 @@ $(document).ready(function(){
         $(this).attr('title', desc);
     });
 
-
     $("#student_select").click(function(){
         $('#s_name').text('');
         $('#s_id').text('');
